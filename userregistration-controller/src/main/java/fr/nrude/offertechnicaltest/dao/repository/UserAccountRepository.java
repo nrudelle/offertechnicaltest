@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface UserAccountRepository extends JpaRepository<UserAccount, Long> {
     @Query("SELECT u FROM UserAccount u WHERE TRIM(u.userName) = TRIM(:username)")
-    public Optional<UserAccount> getByUsername(String username);
+    Optional<UserAccount> getByUsername(String username);
 }

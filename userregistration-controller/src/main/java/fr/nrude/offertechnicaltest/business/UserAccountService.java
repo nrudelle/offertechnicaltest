@@ -8,5 +8,5 @@ import fr.nrude.offertechnicaltest.business.exceptions.BusinessValidationExcepti
 public interface UserAccountService {
     public void registerUser(UserRegistrationDTO dto) throws BusinessValidationException;
 
-    public UserDetailsDTO getUserDetails(Long id) throws BusinessException;
+    public UserDetailsDTO getUserDetails(long id) throws BusinessException;
 }

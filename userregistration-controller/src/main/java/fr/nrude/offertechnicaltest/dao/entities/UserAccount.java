@@ -3,6 +3,7 @@ package fr.nrude.offertechnicaltest.dao.entities;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 public class UserAccount {
@@ -65,5 +66,28 @@ public class UserAccount {
     }
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        UserAccount that = (UserAccount) o;
+        return Objects.equals(getId(), that.getId())
+                && Objects.equals(getUserName(), that.getUserName())
+                && Objects.equals(getBirthDate(), that.getBirthDate())
+                && Objects.equals(getCountryCode(), that.getCountryCode())
+                && Objects.equals(getPhoneNumber(), that.getPhoneNumber())
+                && Objects.equals(getGender(), that.getGender());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getUserName(), getBirthDate(), getCountryCode(), getPhoneNumber(), getGender());
     }
 }

@@ -25,7 +25,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     public void registerUser(UserRegistrationDTO dto) throws BusinessValidationException {
         validateUserRegistration(dto);
-        UserAccount entity = convertToEntity(dto);
+        UserAccount entity = ConverterUtils.convertToEntity(dto);
         userAccountRepository.save(entity);
     }
     private void validateUserRegistration(UserRegistrationDTO dto) throws BusinessValidationException {
@@ -37,32 +37,10 @@ public class UserAccountServiceImpl implements UserAccountService {
             throw new BusinessValidationException("User registration validation has returned errors.", validationErrors);
         }
     }
-    private UserAccount convertToEntity(UserRegistrationDTO dto) {
-        UserAccount entity = new UserAccount();
-
-        entity.setUserName(dto.userName);
-        entity.setBirthDate(dto.birthDate);
-        entity.setCountryCode(dto.countryCode);
-        entity.setGender(dto.gender);
-        entity.setPhoneNumber(dto.phoneNumber);
-
-        return entity;
-    }
 
     @Override
-    public UserDetailsDTO getUserDetails(Long id) throws BusinessException {
+    public UserDetailsDTO getUserDetails(long id) throws BusinessException {
         Optional<UserAccount> entity = userAccountRepository.findById(id);
-        return convertToDTO(entity.orElseThrow(() -> new BusinessException("Pas d'utilisateur avec l'id '"+id+"'")));
-    }
-    private UserDetailsDTO convertToDTO(UserAccount entity) {
-        UserDetailsDTO dto = new UserDetailsDTO();
-
-        dto.userName = entity.getUserName();
-        dto.birthDate = entity.getBirthDate();
-        dto.countryCode =  entity.getCountryCode();
-        dto.gender = entity.getGender();
-        dto.phoneNumber = entity.getPhoneNumber();
-
-        return dto;
+        return ConverterUtils.convertToDTO(entity.orElseThrow(() -> new BusinessException("Pas d'utilisateur avec l'id '"+id+"'")));
     }
 }
