@@ -23,29 +23,29 @@ public class UserAccountController {
 
     @PostMapping("/register")
     @ResponseBody
-    public ResponseEntity<RequestResult<Boolean>> registerUser(@Valid @RequestBody UserRegistrationRequest request,
+    public ResponseEntity<RequestResult<UserDetailsDTO>> registerUser(@Valid @RequestBody UserRegistrationRequest request,
                                                       BindingResult bindingResult) {
-        ResponseEntity<RequestResult<Boolean>> response;
+        ResponseEntity<RequestResult<UserDetailsDTO>> response;
 
         try {
             if (bindingResult.hasErrors()) {
                 List<String> errors = RequestUtils.getErrorsList(bindingResult);
-                RequestResult<Boolean> result = new RequestResult<>(false, errors);
+                RequestResult<UserDetailsDTO> result = new RequestResult<>(null, errors);
                 return ResponseEntity.badRequest().body(result);
             }
 
             UserRegistrationDTO businessDTO = ConverterUtils.convertToRegistrationDTO(request);
-            userAccountService.registerUser(businessDTO);
+            UserDetailsDTO userCreatedDetailsDTO = userAccountService.registerUser(businessDTO);
 
-            RequestResult<Boolean> result = new RequestResult<>(true);
+            RequestResult<UserDetailsDTO> result = new RequestResult<>(userCreatedDetailsDTO);
             response = ResponseEntity.ok(result);
         } catch(IllegalArgumentException e) {
             RequestResult<Boolean> result = new RequestResult<>(false);
             result.errors.add(e.getMessage());
-            response = ResponseEntity.badRequest().body(result);
+            response = ResponseEntity.badRequest().body(new RequestResult<>(null));
         } catch (BusinessValidationException e) {
             RequestResult<Boolean> result = new RequestResult<>(false, e.getValidationErrorMessages());
-            return ResponseEntity.internalServerError().body(result);
+            return ResponseEntity.internalServerError().body(new RequestResult<>(null));
         }
 
         return response;

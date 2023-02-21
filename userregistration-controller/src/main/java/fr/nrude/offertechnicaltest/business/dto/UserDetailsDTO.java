@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Objects;
 
 public class UserDetailsDTO {
+    public long id = 0L;
     public String userName = "";
     public Date birthDate;
     public String countryCode = "";
@@ -20,7 +21,8 @@ public class UserDetailsDTO {
         }
 
         UserDetailsDTO that = (UserDetailsDTO) o;
-        return Objects.equals(userName, that.userName)
+        return id == that.id
+                && Objects.equals(userName, that.userName)
                 && Objects.equals(birthDate, that.birthDate)
                 && Objects.equals(countryCode, that.countryCode)
                 && Objects.equals(phoneNumber, that.phoneNumber)
@@ -28,6 +30,6 @@ public class UserDetailsDTO {
     }
     @Override
     public int hashCode() {
-        return Objects.hash(userName, birthDate, countryCode, phoneNumber, gender);
+        return Objects.hash(id, userName, birthDate, countryCode, phoneNumber, gender);
     }
 }

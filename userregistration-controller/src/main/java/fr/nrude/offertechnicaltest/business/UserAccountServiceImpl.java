@@ -23,10 +23,14 @@ public class UserAccountServiceImpl implements UserAccountService {
     private List<UserRegistrationValidation> userRegistrationValidations;
 
     @Override
-    public void registerUser(UserRegistrationDTO dto) throws BusinessValidationException {
+    public UserDetailsDTO registerUser(UserRegistrationDTO dto) throws BusinessValidationException {
         validateUserRegistration(dto);
+
         UserAccount entity = ConverterUtils.convertToEntity(dto);
-        userAccountRepository.save(entity);
+        entity = userAccountRepository.save(entity);
+
+        UserDetailsDTO userDetailsDTO = ConverterUtils.convertToDTO(entity);
+        return userDetailsDTO;
     }
     private void validateUserRegistration(UserRegistrationDTO dto) throws BusinessValidationException {
         List<String> validationErrors = userRegistrationValidations.stream()
@@ -41,6 +45,9 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     public UserDetailsDTO getUserDetails(long id) throws BusinessException {
         Optional<UserAccount> entity = userAccountRepository.findById(id);
-        return ConverterUtils.convertToDTO(entity.orElseThrow(() -> new BusinessException("Pas d'utilisateur avec l'id '"+id+"'")));
+
+        UserDetailsDTO userDetailsDTO = ConverterUtils.convertToDTO(
+                entity.orElseThrow(() -> new BusinessException("Pas d'utilisateur avec l'id '"+id+"'")));
+        return userDetailsDTO;
     }
 }

@@ -40,23 +40,33 @@ class UserAccountControllerGetUserDetailsIntegrationTest {
     }
 
     @Test
-    void getUserDetails() throws Exception {
-        long idProvided = 1L;
+    void testGetUserDetailsUserFound() throws Exception {
         UserAccount testUser = getTestUser();
-        testUser.setId(idProvided);
-        userAccountRepository.save(testUser);
+        testUser = userAccountRepository.save(testUser);
 
-        /*
-        actual :
-        {"result":{"userName":"ldupond","birthDate":"2023-02-21T14:27:00.659+00:00","countryCode":"fr",
-        "phoneNumber":"0698286200","gender":"M"},"errors":[]}
-         */
+        Long idProvided = testUser.getId();
 
         mvc.perform(MockMvcRequestBuilders.get("/users/"+idProvided+"/getDetails")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.result.userName", Matchers.is("ldupond")));
+                .andExpect(jsonPath("$.result.id", Matchers.is(idProvided.intValue())))
+                .andExpect(jsonPath("$.result.userName", Matchers.is(testUser.getUserName())))
+                .andExpect(jsonPath("$.result.countryCode", Matchers.is(testUser.getCountryCode())))
+                .andExpect(jsonPath("$.result.phoneNumber", Matchers.is(testUser.getPhoneNumber())))
+                .andExpect(jsonPath("$.result.gender", Matchers.is(testUser.getGender())));
+    }
+
+    @Test
+    void testGetUserDetailsUserNotFound() throws Exception {
+        long idProvided = 1L;
+
+        mvc.perform(MockMvcRequestBuilders.get("/users/"+idProvided+"/getDetails")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is5xxServerError())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.result", Matchers.nullValue()))
+                .andExpect(jsonPath("$.errors", Matchers.not(Matchers.emptyOrNullString())));
     }
 
     private UserAccount getTestUser() {

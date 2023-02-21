@@ -18,8 +18,13 @@ public class ConverterUtils {
     }
 
     public static UserDetailsDTO convertToDTO(UserAccount entity) {
+        if(entity == null) {
+            return null;
+        }
+
         UserDetailsDTO dto = new UserDetailsDTO();
 
+        dto.id = entity.getId();
         dto.userName = entity.getUserName();
         dto.birthDate = entity.getBirthDate();
         dto.countryCode =  entity.getCountryCode();

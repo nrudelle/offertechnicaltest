@@ -8,7 +8,7 @@ import java.util.Objects;
 @Entity
 public class UserAccount {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id = 0L;
 
     @Column(length = 50, nullable = false, unique = true)
