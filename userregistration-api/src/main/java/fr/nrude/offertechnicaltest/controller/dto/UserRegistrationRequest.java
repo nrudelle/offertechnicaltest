@@ -15,7 +15,7 @@ public class UserRegistrationRequest {
     @NotEmpty(message = "Country code cannot be empty")
     @Pattern(regexp = "^[a-z]{1,2}$", message = "Country code must be composed of 1 or 2 lowercase letters")
     public String countryCode;
-    @Pattern(regexp = "^\\d{10}$", message = "Phone number must be composed of exactly 10 digits")
+    @Pattern(regexp = "^\\d{10}$", message = "Phone number must be composed of exactly 10 digits without spaces")
     public String phoneNumber = "";
     @Pattern(regexp = "^M|F$", message = "Invalid format of gender. Possible values : M or F")
     public String gender = "";

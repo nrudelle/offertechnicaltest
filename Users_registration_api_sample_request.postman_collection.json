@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "ce560819-ab1b-4714-aa81-7d94bb14fa4d",
+		"name": "Users registration api sample request",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register user with all fields",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"ldupond\",\r\n    \"birthDate\": \"15-03-1987\",\r\n    \"countryCode\": \"fr\",\r\n    \"gender\": \"M\",\r\n    \"phoneNumber\": \"0698286200\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_URL}}/users/register",
+					"host": [
+						"{{HOST_URL}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register user without only mandatory fields",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"maubry\",\r\n    \"birthDate\": \"15-03-1960\",\r\n    \"countryCode\": \"fr\",\r\n    \"phoneNumber\": \"0698256233\",\r\n    \"gender\": \"F\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_URL}}/users/register",
+					"host": [
+						"{{HOST_URL}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register user without mandatory fields",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": null,\r\n    \"birthDate\": null,\r\n    \"countryCode\": null,\r\n    \"phoneNumber\": \"0698256233\",\r\n    \"gender\": \"F\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_URL}}/users/register",
+					"host": [
+						"{{HOST_URL}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register user with invalid birthdate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"nsarkozy\",\r\n    \"birthDate\": \"15/03/1987\",\r\n    \"countryCode\": \"fr\",\r\n    \"gender\": \"M\",\r\n    \"phoneNumber\": \"0698286200\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_URL}}/users/register",
+					"host": [
+						"{{HOST_URL}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register user with invalid country",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"jchirac\",\r\n    \"birthDate\": \"15-03-1987\",\r\n    \"countryCode\": \"en\",\r\n    \"gender\": \"M\",\r\n    \"phoneNumber\": \"0698286200\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_URL}}/users/register",
+					"host": [
+						"{{HOST_URL}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register user with invalid gender",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"emacron\",\r\n    \"birthDate\": \"15-03-1987\",\r\n    \"countryCode\": \"fr\",\r\n    \"gender\": \"Masculin\",\r\n    \"phoneNumber\": \"0698286200\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_URL}}/users/register",
+					"host": [
+						"{{HOST_URL}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register user with invalid phone number format",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"pdevillier\",\r\n    \"birthDate\": \"15-03-1987\",\r\n    \"countryCode\": \"fr\",\r\n    \"gender\": \"M\",\r\n    \"phoneNumber\": \"06 98 28 62 00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_URL}}/users/register",
+					"host": [
+						"{{HOST_URL}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST_URL}}/users/1/getDetails",
+					"host": [
+						"{{HOST_URL}}"
+					],
+					"path": [
+						"users",
+						"1",
+						"getDetails"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
