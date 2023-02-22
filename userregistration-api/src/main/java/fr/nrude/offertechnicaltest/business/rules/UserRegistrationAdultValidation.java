@@ -16,7 +16,6 @@ public class UserRegistrationAdultValidation implements UserRegistrationValidati
     @Override
     public boolean validate(UserRegistrationDTO userRegistrationDTO) {
         int actualAge = getActualAge(userRegistrationDTO.birthDate);
-        System.out.println("actualAge : "+actualAge);
         return actualAge >= MINIMUM_AGE_ADULT;
     }
     private int getActualAge(Date birthDate) {

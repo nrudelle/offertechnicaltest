@@ -14,7 +14,6 @@ public class UsersSpringBootApplication
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
         final SpringApplication mainApplication = new SpringApplication(UsersSpringBootApplication.class);
         mainApplication.run();
     }
