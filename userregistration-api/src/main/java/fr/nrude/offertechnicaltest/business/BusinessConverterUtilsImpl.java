@@ -3,12 +3,14 @@ package fr.nrude.offertechnicaltest.business;
 import fr.nrude.offertechnicaltest.business.dto.UserDetailsDTO;
 import fr.nrude.offertechnicaltest.business.dto.UserRegistrationDTO;
 import fr.nrude.offertechnicaltest.dao.entities.UserAccount;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-public class ConverterUtils {
-    public static UserAccount convertToEntity(UserRegistrationDTO dto) {
+@Component
+public class BusinessConverterUtilsImpl implements BusinessConverterUtils {
+    public UserAccount convertToEntity(UserRegistrationDTO dto) {
         UserAccount entity = new UserAccount();
 
         entity.setUserName(dto.userName);
@@ -20,7 +22,7 @@ public class ConverterUtils {
         return entity;
     }
 
-    public static UserDetailsDTO convertToDTO(UserAccount entity) {
+    public UserDetailsDTO convertToDTO(UserAccount entity) {
         if(entity == null) {
             return null;
         }

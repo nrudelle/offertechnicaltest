@@ -15,10 +15,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class RequestUtilsTest {
+class RequestUtilsImplTest {
 
     @Mock
     private BindingResult bindingResult;
+
+    private static final RequestUtils REQUEST_UTILS = new RequestUtilsImpl();
 
     private AutoCloseable closable;
 
@@ -43,7 +45,7 @@ class RequestUtilsTest {
         List<ObjectError> errorsProvided = Arrays.asList(objError1, objError2);
         Mockito.when(bindingResult.getAllErrors()).thenReturn(errorsProvided);
 
-        List<String> actual = RequestUtils.getErrorsList(bindingResult);
+        List<String> actual = REQUEST_UTILS.getErrorsList(bindingResult);
 
         assertNotNull(actual);
         assertEquals(2, actual.size());

@@ -1,7 +1,7 @@
 package fr.nrude.offertechnicaltest.business;
 
 import fr.nrude.offertechnicaltest.business.dto.UserRegistrationDTO;
-import fr.nrude.offertechnicaltest.business.exceptions.BusinessValidationException;
+import fr.nrude.offertechnicaltest.business.exceptions.ValidationBusinessException;
 import fr.nrude.offertechnicaltest.business.rules.UserRegistrationImplTestValidation;
 import fr.nrude.offertechnicaltest.business.rules.UserRegistrationValidation;
 import fr.nrude.offertechnicaltest.dao.entities.UserAccount;
@@ -23,6 +23,9 @@ class UserAccountServiceImplRegisterUserTest {
 
     @Spy
     private ArrayList<UserRegistrationValidation> userRegistrationValidations;
+
+    @Mock
+    private BusinessConverterUtils converter;
 
     @InjectMocks
     private UserAccountServiceImpl userAccountService;
@@ -48,6 +51,7 @@ class UserAccountServiceImplRegisterUserTest {
     void testRegisterUserValidateDtoOk() {
         userRegistrationValidations.add(new UserRegistrationImplTestValidation(true));
         UserRegistrationDTO dto = new UserRegistrationDTO();
+        Mockito.when(converter.convertToEntity(dto)).thenReturn(new UserAccount());
 
         assertDoesNotThrow(() -> {
             userAccountService.registerUser(dto);
@@ -59,15 +63,17 @@ class UserAccountServiceImplRegisterUserTest {
         userRegistrationValidations.add(new UserRegistrationImplTestValidation(true));
         userRegistrationValidations.add(new UserRegistrationImplTestValidation(false));
         UserRegistrationDTO dto = new UserRegistrationDTO();
+        Mockito.when(converter.convertToEntity(dto)).thenReturn(new UserAccount());
 
-        assertThrows(BusinessValidationException.class, () -> {
+        assertThrows(ValidationBusinessException.class, () -> {
             userAccountService.registerUser(dto);
         });
     }
 
     @Test
-    void testRegisterUserSaveToRepo() throws BusinessValidationException {
+    void testRegisterUserCallSaveToRepo() throws ValidationBusinessException {
         UserRegistrationDTO dto = new UserRegistrationDTO();
+        Mockito.when(converter.convertToEntity(dto)).thenReturn(new UserAccount());
 
         userAccountService.registerUser(dto);
 

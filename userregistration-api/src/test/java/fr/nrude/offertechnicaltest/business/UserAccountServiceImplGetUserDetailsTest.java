@@ -23,6 +23,9 @@ class UserAccountServiceImplGetUserDetailsTest {
     @Mock
     private UserAccountRepository userAccountRepository;
 
+    @Mock
+    private BusinessConverterUtils converter;
+
     @InjectMocks
     private UserAccountServiceImpl userAccountService;
 
@@ -46,9 +49,10 @@ class UserAccountServiceImplGetUserDetailsTest {
     @Test
     void testGetUserDetailsOkUserFound() {
         long provided = 200L;
-        UserDetailsDTO expected = getDefaultUserDetailsDTO();
         UserAccount userFound = getDefaultUserAccountEntity();
+        UserDetailsDTO expected = getDefaultUserDetailsDTO();
         Mockito.when(userAccountRepository.findById(provided)).thenReturn(Optional.of(userFound));
+        Mockito.when(converter.convertToDTO(userFound)).thenReturn(expected);
 
         assertDoesNotThrow(() -> {
             UserDetailsDTO actual = userAccountService.getUserDetails(provided);

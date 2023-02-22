@@ -10,7 +10,9 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ConverterUtilsTest {
+class ControllerConverterUtilsImplTest {
+
+    private static final ControllerConverterUtils CONVERTER = new ControllerConverterUtilsImpl();
 
     private static final Date DEFAULT_DATE = java.util.Date.from(LocalDate.of(2023,2,20)
             .atStartOfDay()
@@ -22,7 +24,7 @@ class ConverterUtilsTest {
         UserRegistrationRequest provided = getDefaultUserRegistrationRequest();
         UserRegistrationDTO expected = getDefaultUserRegistrationDTO();
 
-        UserRegistrationDTO actual = ConverterUtils.convertToRegistrationDTO(provided);
+        UserRegistrationDTO actual = CONVERTER.convertToRegistrationDTO(provided);
 
         assertEquals(expected, actual);
     }

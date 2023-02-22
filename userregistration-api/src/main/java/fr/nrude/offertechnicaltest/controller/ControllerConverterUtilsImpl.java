@@ -2,6 +2,7 @@ package fr.nrude.offertechnicaltest.controller;
 
 import fr.nrude.offertechnicaltest.business.dto.UserRegistrationDTO;
 import fr.nrude.offertechnicaltest.controller.dto.UserRegistrationRequest;
+import org.springframework.stereotype.Component;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -9,8 +10,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-public class ConverterUtils {
-    public static UserRegistrationDTO convertToRegistrationDTO(UserRegistrationRequest request) {
+@Component
+public class ControllerConverterUtilsImpl implements ControllerConverterUtils {
+    public UserRegistrationDTO convertToRegistrationDTO(UserRegistrationRequest request) {
         UserRegistrationDTO dto = new UserRegistrationDTO();
 
         try {

@@ -11,16 +11,18 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ConverterUtilsTest {
+class BusinessConverterUtilsImplTest {
 
     private static final Date DEFAULT_DATE = new Date();
+
+    private static final BusinessConverterUtils CONVERTER = new BusinessConverterUtilsImpl();
 
     @Test
     void testConvertUserRegistrationDTOtoUserAccountEntity() {
         UserRegistrationDTO provided = getDefaultUserRegistrationDTO();
         UserAccount expected = getDefaultUserAccountEntity();
 
-        UserAccount actual = ConverterUtils.convertToEntity(provided);
+        UserAccount actual = CONVERTER.convertToEntity(provided);
 
         assertEquals(expected, actual);
     }
@@ -30,7 +32,7 @@ class ConverterUtilsTest {
         UserAccount provided = getDefaultUserAccountEntity();
         UserDetailsDTO expected = getDefaultUserDetailsDTO();
 
-        UserDetailsDTO actual = ConverterUtils.convertToDTO(provided);
+        UserDetailsDTO actual = CONVERTER.convertToDTO(provided);
 
         assertEquals(expected, actual);
     }

@@ -3,7 +3,7 @@ package fr.nrude.offertechnicaltest.controller;
 import fr.nrude.offertechnicaltest.business.UserAccountService;
 import fr.nrude.offertechnicaltest.business.dto.UserDetailsDTO;
 import fr.nrude.offertechnicaltest.business.dto.UserRegistrationDTO;
-import fr.nrude.offertechnicaltest.business.exceptions.BusinessValidationException;
+import fr.nrude.offertechnicaltest.business.exceptions.ValidationBusinessException;
 import fr.nrude.offertechnicaltest.business.exceptions.ResourceNotFoundBusinessException;
 import fr.nrude.offertechnicaltest.controller.dto.RequestResult;
 import fr.nrude.offertechnicaltest.controller.dto.UserRegistrationRequest;
@@ -22,6 +22,11 @@ public class UserAccountController {
     @Autowired
     private UserAccountService userAccountService;
 
+    @Autowired
+    private RequestUtils requestUtils;
+
+    @Autowired
+    private ControllerConverterUtils converter;
     @PostMapping("/register")
     @ResponseBody
     public ResponseEntity<RequestResult<UserDetailsDTO>> registerUser(@Valid @RequestBody UserRegistrationRequest request,
@@ -30,12 +35,12 @@ public class UserAccountController {
 
         try {
             if (bindingResult.hasErrors()) {
-                List<String> errors = RequestUtils.getErrorsList(bindingResult);
+                List<String> errors = requestUtils.getErrorsList(bindingResult);
                 RequestResult<UserDetailsDTO> result = new RequestResult<>(null, errors);
                 return ResponseEntity.badRequest().body(result);
             }
 
-            UserRegistrationDTO businessDTO = ConverterUtils.convertToRegistrationDTO(request);
+            UserRegistrationDTO businessDTO = converter.convertToRegistrationDTO(request);
             UserDetailsDTO userCreatedDetailsDTO = userAccountService.registerUser(businessDTO);
 
             RequestResult<UserDetailsDTO> result = new RequestResult<>(userCreatedDetailsDTO);
@@ -43,7 +48,7 @@ public class UserAccountController {
         } catch(IllegalArgumentException e) {
             RequestResult<UserDetailsDTO> result = new RequestResult<>(null, Collections.singletonList(e.getMessage()));
             response = ResponseEntity.badRequest().body(result);
-        } catch (BusinessValidationException e) {
+        } catch (ValidationBusinessException e) {
             RequestResult<UserDetailsDTO> result = new RequestResult<>(null, e.getValidationErrorMessages());
             return ResponseEntity.internalServerError().body(result);
         }
