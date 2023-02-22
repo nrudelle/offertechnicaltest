@@ -3,8 +3,8 @@ package fr.nrude.offertechnicaltest.controller;
 import fr.nrude.offertechnicaltest.business.UserAccountService;
 import fr.nrude.offertechnicaltest.business.dto.UserDetailsDTO;
 import fr.nrude.offertechnicaltest.business.dto.UserRegistrationDTO;
-import fr.nrude.offertechnicaltest.business.exceptions.ResourceNotFoundBusinessException;
 import fr.nrude.offertechnicaltest.business.exceptions.BusinessValidationException;
+import fr.nrude.offertechnicaltest.business.exceptions.ResourceNotFoundBusinessException;
 import fr.nrude.offertechnicaltest.controller.dto.RequestResult;
 import fr.nrude.offertechnicaltest.controller.dto.UserRegistrationRequest;
 import jakarta.validation.Valid;
@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -40,12 +41,11 @@ public class UserAccountController {
             RequestResult<UserDetailsDTO> result = new RequestResult<>(userCreatedDetailsDTO);
             response = ResponseEntity.ok(result);
         } catch(IllegalArgumentException e) {
-            RequestResult<Boolean> result = new RequestResult<>(false);
-            result.errors.add(e.getMessage());
-            response = ResponseEntity.badRequest().body(new RequestResult<>(null));
+            RequestResult<UserDetailsDTO> result = new RequestResult<>(null, Collections.singletonList(e.getMessage()));
+            response = ResponseEntity.badRequest().body(result);
         } catch (BusinessValidationException e) {
-            RequestResult<Boolean> result = new RequestResult<>(false, e.getValidationErrorMessages());
-            return ResponseEntity.internalServerError().body(new RequestResult<>(null));
+            RequestResult<UserDetailsDTO> result = new RequestResult<>(null, e.getValidationErrorMessages());
+            return ResponseEntity.internalServerError().body(result);
         }
 
         return response;

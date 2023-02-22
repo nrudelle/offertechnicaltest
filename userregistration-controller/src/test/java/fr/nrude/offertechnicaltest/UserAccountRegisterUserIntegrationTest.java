@@ -47,7 +47,7 @@ class UserAccountRegisterUserIntegrationTest {
     }
 
     @Test
-    void testRegisterUserOk() throws Exception {
+    void testRegisterUserOkUserCreation() throws Exception {
         UserRegistrationRequest requestProvided = createUserRegistrationRequest("ldupond", "15-03-1988", "fr", "M", "0255668899");
 
         mvc.perform(MockMvcRequestBuilders.post("/users/register")
@@ -61,25 +61,35 @@ class UserAccountRegisterUserIntegrationTest {
                 .andExpect(jsonPath("$.result.phoneNumber", Matchers.is(requestProvided.phoneNumber)))
                 .andExpect(jsonPath("$.result.gender", Matchers.is(requestProvided.gender)));
 
-        UserAccount userCreatedExpected = createUserAccount(1L,"ldupond", "15-03-1988", "fr", "M", "0255668899");
+        UserAccount userCreatedExpected = createUserAccount("ldupond", "15-03-1988", "fr", "M", "0255668899");
         Optional<UserAccount> userCreatedActual = userAccountRepository.findById(1L);
         assertFalse(userCreatedActual.isEmpty());
         assertNotNull(userCreatedActual.get());
         assertEquals(userCreatedExpected, userCreatedActual.get());
     }
-    private UserAccount createUserAccount(long id, String userName, String birthDate, String countryCode,
-                                          String gender, String phoneNumber) {
-        UserAccount userAccount = new UserAccount();
-        userAccount.setId(id);
-        userAccount.setUserName(userName);
 
-        LocalDate birthLocalDate = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        userAccount.setBirthDate(Date.from(birthLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+    @Test
+    void testRegisterUserKoRequestValidationFailMissingMandatoryFields() throws Exception {
+        UserRegistrationRequest requestProvided = createUserRegistrationRequest(null,
+                null, null, "M", "0255668899");
 
-        userAccount.setCountryCode(countryCode);
-        userAccount.setPhoneNumber(phoneNumber);
-        userAccount.setGender(gender);
-        return userAccount;
+        mvc.perform(MockMvcRequestBuilders.post("/users/register")
+                        .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(requestProvided)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.result", Matchers.nullValue()))
+                .andExpect(jsonPath("$.errors", Matchers.not(Matchers.empty())))
+                .andExpect(jsonPath("$.errors", Matchers.hasSize(3)));
+    }
+
+    @Test
+    void testRegisterUserOkRequestValidationFailMissingOptionalFields() throws Exception {
+        UserRegistrationRequest requestProvided = createUserRegistrationRequest("ldupond",
+                "15-03-1988", "fr", null, null);
+
+        mvc.perform(MockMvcRequestBuilders.post("/users/register")
+                        .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(requestProvided)))
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
@@ -154,27 +164,62 @@ class UserAccountRegisterUserIntegrationTest {
     }
 
     @Test
-    void testRegisterUserKoRequestValidationFailMissingMandatoryFields() throws Exception {
-        UserRegistrationRequest requestProvided = createUserRegistrationRequest(null,
-                null, null, "M", "0255668899");
+    void testRegisterUserKoBusinessValidationFailUsernameNotUnique() throws Exception {
+        UserAccount testUser = createUserAccount("ldupond", "15-03-1988", "fr", "M", "0255668899");;
+        userAccountRepository.save(testUser);
+
+        UserRegistrationRequest requestProvided = createUserRegistrationRequest("ldupond",
+                "15-03-1987", "fr", "M", "0623568899");
 
         mvc.perform(MockMvcRequestBuilders.post("/users/register")
                         .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(requestProvided)))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().is5xxServerError())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.result", Matchers.nullValue()))
                 .andExpect(jsonPath("$.errors", Matchers.not(Matchers.empty())))
-                .andExpect(jsonPath("$.errors", Matchers.hasSize(3)));
+                .andExpect(jsonPath("$.errors", Matchers.hasSize(1)));
     }
 
     @Test
-    void testRegisterUserOkRequestValidationFailMissingOptionalFields() throws Exception {
+    void testRegisterUserKoBusinessValidationFailNotAdult() throws Exception {
         UserRegistrationRequest requestProvided = createUserRegistrationRequest("ldupond",
-                "15-03-1988", "fr", null, null);
+                "15-03-2010", "fr", "M", "0623568899");
 
         mvc.perform(MockMvcRequestBuilders.post("/users/register")
                         .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(requestProvided)))
-                .andExpect(status().is2xxSuccessful());
+                .andExpect(status().is5xxServerError())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.result", Matchers.nullValue()))
+                .andExpect(jsonPath("$.errors", Matchers.not(Matchers.empty())))
+                .andExpect(jsonPath("$.errors", Matchers.hasSize(1)));
+    }
+
+    @Test
+    void testRegisterUserKoBusinessValidationFailUnauthorizedCountry() throws Exception {
+        UserRegistrationRequest requestProvided = createUserRegistrationRequest("ldupond",
+                "15-03-1987", "en", "M", "0623568899");
+
+        mvc.perform(MockMvcRequestBuilders.post("/users/register")
+                        .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(requestProvided)))
+                .andExpect(status().is5xxServerError())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.result", Matchers.nullValue()))
+                .andExpect(jsonPath("$.errors", Matchers.not(Matchers.empty())))
+                .andExpect(jsonPath("$.errors", Matchers.hasSize(1)));
+    }
+
+    private UserAccount createUserAccount(String userName, String birthDate, String countryCode,
+                                          String gender, String phoneNumber) {
+        UserAccount userAccount = new UserAccount();
+        userAccount.setUserName(userName);
+
+        LocalDate birthLocalDate = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        userAccount.setBirthDate(Date.from(birthLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+        userAccount.setCountryCode(countryCode);
+        userAccount.setPhoneNumber(phoneNumber);
+        userAccount.setGender(gender);
+        return userAccount;
     }
 
     private UserRegistrationRequest createUserRegistrationRequest(String userName, String birthDate, String countryCode,
