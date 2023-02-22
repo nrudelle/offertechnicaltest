@@ -4,6 +4,9 @@ import fr.nrude.offertechnicaltest.business.dto.UserDetailsDTO;
 import fr.nrude.offertechnicaltest.business.dto.UserRegistrationDTO;
 import fr.nrude.offertechnicaltest.dao.entities.UserAccount;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 public class ConverterUtils {
     public static UserAccount convertToEntity(UserRegistrationDTO dto) {
         UserAccount entity = new UserAccount();
@@ -26,7 +29,11 @@ public class ConverterUtils {
 
         dto.id = entity.getId();
         dto.userName = entity.getUserName();
-        dto.birthDate = entity.getBirthDate();
+
+        LocalDate birthLocalDate = LocalDate.ofInstant(entity.getBirthDate().toInstant(), ZoneId.systemDefault());
+        dto.birthDate = String.format("%2s-%2s-%s",
+                birthLocalDate.getDayOfMonth(), birthLocalDate.getMonthValue(), birthLocalDate.getYear())
+                .replace(' ', '0');;
         dto.countryCode =  entity.getCountryCode();
         dto.gender = entity.getGender();
         dto.phoneNumber = entity.getPhoneNumber();

@@ -5,6 +5,8 @@ import fr.nrude.offertechnicaltest.business.dto.UserRegistrationDTO;
 import fr.nrude.offertechnicaltest.dao.entities.UserAccount;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,7 +49,10 @@ class ConverterUtilsTest {
     private UserDetailsDTO getDefaultUserDetailsDTO() {
         UserDetailsDTO dto = new UserDetailsDTO();
         dto.userName = "username";
-        dto.birthDate = DEFAULT_DATE;
+        LocalDate birthLocalDate = LocalDate.ofInstant(DEFAULT_DATE.toInstant(), ZoneId.systemDefault());
+        dto.birthDate = String.format("%2s-%2s-%s",
+                birthLocalDate.getDayOfMonth(), birthLocalDate.getMonthValue(), birthLocalDate.getYear())
+                .replace(' ', '0');
         dto.countryCode =  "fr";
         dto.gender = "F";
         dto.phoneNumber = "0456897721";

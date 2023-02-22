@@ -1,7 +1,7 @@
 package fr.nrude.offertechnicaltest.business;
 
 import fr.nrude.offertechnicaltest.business.dto.UserDetailsDTO;
-import fr.nrude.offertechnicaltest.business.exceptions.BusinessException;
+import fr.nrude.offertechnicaltest.business.exceptions.ResourceNotFoundBusinessException;
 import fr.nrude.offertechnicaltest.dao.entities.UserAccount;
 import fr.nrude.offertechnicaltest.dao.repository.UserAccountRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Optional;
 
@@ -60,7 +62,7 @@ class UserAccountServiceImplGetUserDetailsTest {
         long id = 404L;
         Mockito.when(userAccountRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(BusinessException.class, () -> {
+        assertThrows(ResourceNotFoundBusinessException.class, () -> {
             userAccountService.getUserDetails(id);
         });
         Mockito.verify(userAccountRepository, Mockito.times(1)).findById(id);
@@ -69,7 +71,9 @@ class UserAccountServiceImplGetUserDetailsTest {
     private UserDetailsDTO getDefaultUserDetailsDTO() {
         UserDetailsDTO dto = new UserDetailsDTO();
         dto.userName = "username";
-        dto.birthDate = DEFAULT_DATE;
+        LocalDate birthLocalDate = LocalDate.ofInstant(DEFAULT_DATE.toInstant(), ZoneId.systemDefault());
+        dto.birthDate = String.format("%2s-%2s-%s",
+                birthLocalDate.getDayOfMonth(), birthLocalDate.getMonthValue(), birthLocalDate.getYear());
         dto.countryCode =  "fr";
         dto.gender = "F";
         dto.phoneNumber = "0456897721";

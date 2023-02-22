@@ -1,8 +1,6 @@
 package fr.nrude.offertechnicaltest.controller;
 
 import fr.nrude.offertechnicaltest.business.UserAccountService;
-import fr.nrude.offertechnicaltest.business.dto.UserDetailsDTO;
-import fr.nrude.offertechnicaltest.business.dto.UserRegistrationDTO;
 import fr.nrude.offertechnicaltest.controller.dto.UserRegistrationRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,14 +9,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.validation.BindingResult;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
-
 
 class UserAccountControllerRegisterUserTest {
 
-    private static final Date DEFAULT_DATE = new Date();
+    private static final String DEFAULT_DATE = "22-02-2005";
 
     @Mock
     private UserAccountService userAccountService;
@@ -80,11 +74,7 @@ class UserAccountControllerRegisterUserTest {
     private UserRegistrationRequest getDefaultUserRegistrationRequest() {
         UserRegistrationRequest request = new UserRegistrationRequest();
         request.userName = "ldupond";
-        LocalDate localDefaultDate = DEFAULT_DATE.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        request.birthDate = String.format("%2s-%2s-%s",
-                localDefaultDate.getDayOfMonth(),
-                localDefaultDate.getMonthValue(),
-                localDefaultDate.getYear()).replace(' ', '0');
+        request.birthDate = DEFAULT_DATE;
         request.countryCode = "fr";
         request.gender = "M";
         request.phoneNumber = "0788556622";
@@ -92,6 +82,7 @@ class UserAccountControllerRegisterUserTest {
         return request;
     }
 
+    /*
     private UserRegistrationDTO getDefaultUserRegistrationDTO() {
         UserRegistrationDTO dto = new UserRegistrationDTO();
         dto.userName = "ldupond";
@@ -102,7 +93,9 @@ class UserAccountControllerRegisterUserTest {
 
         return dto;
     }
+    */
 
+    /*
     private UserDetailsDTO getDefaultUserDetailsDTO() {
         UserDetailsDTO dto = new UserDetailsDTO();
         dto.userName = "ldupond";
@@ -113,4 +106,5 @@ class UserAccountControllerRegisterUserTest {
 
         return dto;
     }
+    */
 }

@@ -1,6 +1,5 @@
-package fr.nrude.offertechnicaltest.controller;
+package fr.nrude.offertechnicaltest;
 
-import fr.nrude.offertechnicaltest.UsersSpringBootApplication;
 import fr.nrude.offertechnicaltest.dao.entities.UserAccount;
 import fr.nrude.offertechnicaltest.dao.repository.UserAccountRepository;
 import org.hamcrest.Matchers;
@@ -21,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = UsersSpringBootApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
-class UserAccountControllerGetUserDetailsIntegrationTest {
+class UserAccountGetUserDetailsIntegrationTest {
 
     private static final Date DEFAULT_DATE = new Date();
 

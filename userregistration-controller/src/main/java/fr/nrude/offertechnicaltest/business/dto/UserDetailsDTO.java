@@ -1,12 +1,11 @@
 package fr.nrude.offertechnicaltest.business.dto;
 
-import java.util.Date;
 import java.util.Objects;
 
 public class UserDetailsDTO {
     public long id = 0L;
     public String userName = "";
-    public Date birthDate;
+    public String birthDate;
     public String countryCode = "";
     public String phoneNumber = "";
     public String gender = "";

@@ -2,7 +2,7 @@ package fr.nrude.offertechnicaltest.business;
 
 import fr.nrude.offertechnicaltest.business.dto.UserDetailsDTO;
 import fr.nrude.offertechnicaltest.business.dto.UserRegistrationDTO;
-import fr.nrude.offertechnicaltest.business.exceptions.BusinessException;
+import fr.nrude.offertechnicaltest.business.exceptions.ResourceNotFoundBusinessException;
 import fr.nrude.offertechnicaltest.business.exceptions.BusinessValidationException;
 import fr.nrude.offertechnicaltest.business.rules.UserRegistrationValidation;
 import fr.nrude.offertechnicaltest.dao.entities.UserAccount;
@@ -43,11 +43,11 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public UserDetailsDTO getUserDetails(long id) throws BusinessException {
+    public UserDetailsDTO getUserDetails(long id) throws ResourceNotFoundBusinessException {
         Optional<UserAccount> entity = userAccountRepository.findById(id);
 
         UserDetailsDTO userDetailsDTO = ConverterUtils.convertToDTO(
-                entity.orElseThrow(() -> new BusinessException("Pas d'utilisateur avec l'id '"+id+"'")));
+                entity.orElseThrow(() -> new ResourceNotFoundBusinessException("Pas d'utilisateur avec l'id '"+id+"'")));
         return userDetailsDTO;
     }
 }

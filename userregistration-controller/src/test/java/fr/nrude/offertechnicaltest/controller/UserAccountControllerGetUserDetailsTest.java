@@ -2,7 +2,7 @@ package fr.nrude.offertechnicaltest.controller;
 
 import fr.nrude.offertechnicaltest.business.UserAccountService;
 import fr.nrude.offertechnicaltest.business.dto.UserDetailsDTO;
-import fr.nrude.offertechnicaltest.business.exceptions.BusinessException;
+import fr.nrude.offertechnicaltest.business.exceptions.ResourceNotFoundBusinessException;
 import fr.nrude.offertechnicaltest.controller.dto.RequestResult;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,13 +13,11 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Date;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserAccountControllerGetUserDetailsTest {
 
-    private static final Date DEFAULT_DATE = new Date();
+    private static final String DEFAULT_DATE = "22-02-2005";
 
     @Mock
     private UserAccountService userAccountService;
@@ -42,7 +40,7 @@ class UserAccountControllerGetUserDetailsTest {
     }
 
     @Test
-    void testGetUserDetailsOkUserFound() throws BusinessException {
+    void testGetUserDetailsOkUserFound() throws ResourceNotFoundBusinessException {
         long userIdProvided = 200L;
         UserDetailsDTO expected = getDefaultUserDetailsDTO();
         Mockito.when(userAccountService.getUserDetails(userIdProvided)).thenReturn(expected);
@@ -56,9 +54,9 @@ class UserAccountControllerGetUserDetailsTest {
     }
 
     @Test
-    void testGetUserDetailsOkUserNotFound() throws BusinessException {
+    void testGetUserDetailsOkUserNotFound() throws ResourceNotFoundBusinessException {
         long userIdProvided = 404L;
-        Mockito.when(userAccountService.getUserDetails(userIdProvided)).thenThrow(BusinessException.class);
+        Mockito.when(userAccountService.getUserDetails(userIdProvided)).thenThrow(ResourceNotFoundBusinessException.class);
 
         ResponseEntity<RequestResult<UserDetailsDTO>> responseActual = controller.getUserDetails(userIdProvided);
 

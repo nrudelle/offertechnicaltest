@@ -3,7 +3,7 @@ package fr.nrude.offertechnicaltest.controller;
 import fr.nrude.offertechnicaltest.business.UserAccountService;
 import fr.nrude.offertechnicaltest.business.dto.UserDetailsDTO;
 import fr.nrude.offertechnicaltest.business.dto.UserRegistrationDTO;
-import fr.nrude.offertechnicaltest.business.exceptions.BusinessException;
+import fr.nrude.offertechnicaltest.business.exceptions.ResourceNotFoundBusinessException;
 import fr.nrude.offertechnicaltest.business.exceptions.BusinessValidationException;
 import fr.nrude.offertechnicaltest.controller.dto.RequestResult;
 import fr.nrude.offertechnicaltest.controller.dto.UserRegistrationRequest;
@@ -60,7 +60,7 @@ public class UserAccountController {
             userDetails = userAccountService.getUserDetails(id);
             RequestResult<UserDetailsDTO> result = new RequestResult<>(userDetails);
             response = ResponseEntity.ok(result);
-        } catch (BusinessException e) {
+        } catch (ResourceNotFoundBusinessException e) {
             RequestResult<UserDetailsDTO> result = new RequestResult<>(null);
             result.errors.add(e.getMessage());
             response = ResponseEntity.internalServerError().body(result);
