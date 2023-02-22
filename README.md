@@ -29,4 +29,4 @@ The app defines following CRUD APIs.
 
 Api documentation will be available at <http://localhost:8080/swagger-ui/index.html#/>, 
 or in json format at <http://localhost:8080/v3/api-docs> 
-as soon the application is started.
+as soon as the application is started.
