@@ -20,7 +20,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Optional;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -44,6 +44,7 @@ class UserAccountRegisterUserIntegrationTest {
 
     @AfterEach
     void tearDown() {
+        userAccountRepository.deleteAll();
     }
 
     @Test
@@ -54,18 +55,20 @@ class UserAccountRegisterUserIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(requestProvided)))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.result.id", Matchers.is(1)))
+                .andExpect(jsonPath("$.result.id", Matchers.not(Matchers.emptyOrNullString())))
+                .andExpect(jsonPath("$.result.id", Matchers.greaterThanOrEqualTo(1)))
                 .andExpect(jsonPath("$.result.userName", Matchers.is(requestProvided.userName)))
                 .andExpect(jsonPath("$.result.birthDate", Matchers.is(requestProvided.birthDate)))
                 .andExpect(jsonPath("$.result.countryCode", Matchers.is(requestProvided.countryCode)))
                 .andExpect(jsonPath("$.result.phoneNumber", Matchers.is(requestProvided.phoneNumber)))
                 .andExpect(jsonPath("$.result.gender", Matchers.is(requestProvided.gender)));
 
-        UserAccount userCreatedExpected = createUserAccount("ldupond", "15-03-1988", "fr", "M", "0255668899");
-        Optional<UserAccount> userCreatedActual = userAccountRepository.findById(1L);
-        assertFalse(userCreatedActual.isEmpty());
-        assertNotNull(userCreatedActual.get());
-        assertEquals(userCreatedExpected, userCreatedActual.get());
+        List<UserAccount> userCreatedListActual = userAccountRepository.findAll();
+        assertFalse(userCreatedListActual.isEmpty());
+        assertEquals(1, userCreatedListActual.size());
+        UserAccount userCreatedActual = userCreatedListActual.get(0);
+        UserAccount userCreatedExpected = createUserAccountEntity(userCreatedActual.getId(),"ldupond", "15-03-1988", "fr", "M", "0255668899");
+        assertEquals(userCreatedExpected, userCreatedActual);
     }
 
     @Test
@@ -165,7 +168,7 @@ class UserAccountRegisterUserIntegrationTest {
 
     @Test
     void testRegisterUserKoBusinessValidationFailUsernameNotUnique() throws Exception {
-        UserAccount testUser = createUserAccount("ldupond", "15-03-1988", "fr", "M", "0255668899");;
+        UserAccount testUser = createUserAccountEntity(1L,"ldupond", "15-03-1988", "fr", "M", "0255668899");;
         userAccountRepository.save(testUser);
 
         UserRegistrationRequest requestProvided = createUserRegistrationRequest("ldupond",
@@ -208,9 +211,10 @@ class UserAccountRegisterUserIntegrationTest {
                 .andExpect(jsonPath("$.errors", Matchers.hasSize(1)));
     }
 
-    private UserAccount createUserAccount(String userName, String birthDate, String countryCode,
-                                          String gender, String phoneNumber) {
+    private UserAccount createUserAccountEntity(long id, String userName, String birthDate, String countryCode,
+                                                String gender, String phoneNumber) {
         UserAccount userAccount = new UserAccount();
+        userAccount.setId(id);
         userAccount.setUserName(userName);
 
         LocalDate birthLocalDate = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));

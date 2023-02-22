@@ -73,7 +73,8 @@ class UserAccountServiceImplGetUserDetailsTest {
         dto.userName = "username";
         LocalDate birthLocalDate = LocalDate.ofInstant(DEFAULT_DATE.toInstant(), ZoneId.systemDefault());
         dto.birthDate = String.format("%2s-%2s-%s",
-                birthLocalDate.getDayOfMonth(), birthLocalDate.getMonthValue(), birthLocalDate.getYear());
+                birthLocalDate.getDayOfMonth(), birthLocalDate.getMonthValue(), birthLocalDate.getYear())
+                .replace(' ', '0');
         dto.countryCode =  "fr";
         dto.gender = "F";
         dto.phoneNumber = "0456897721";

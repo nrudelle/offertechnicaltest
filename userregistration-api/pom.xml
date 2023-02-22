@@ -7,7 +7,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>userregistration-controller</artifactId>
+    <artifactId>userregistration-api</artifactId>
     <packaging>jar</packaging>
 
     <name>userregistration-controller</name>

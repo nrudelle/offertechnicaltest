@@ -36,6 +36,7 @@ class UserAccountGetUserDetailsIntegrationTest {
 
     @AfterEach
     void tearDown() {
+        userAccountRepository.deleteAll();
     }
 
     @Test
