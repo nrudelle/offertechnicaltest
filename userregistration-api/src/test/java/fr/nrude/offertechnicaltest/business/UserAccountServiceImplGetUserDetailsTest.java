@@ -44,7 +44,7 @@ class UserAccountServiceImplGetUserDetailsTest {
     }
 
     @Test
-    void getUserDetailsOkUserFound() {
+    void testGetUserDetailsOkUserFound() {
         long provided = 200L;
         UserDetailsDTO expected = getDefaultUserDetailsDTO();
         UserAccount userFound = getDefaultUserAccountEntity();
@@ -58,7 +58,7 @@ class UserAccountServiceImplGetUserDetailsTest {
     }
 
     @Test
-    void getUserDetailsKoUserNotFound() {
+    void testGetUserDetailsKoUserNotFound() {
         long id = 404L;
         Mockito.when(userAccountRepository.findById(id)).thenReturn(Optional.empty());
 

@@ -28,7 +28,7 @@ class UserRegistrationAdultValidationTest {
     }
 
     @Test
-    void validateIsAdult() {
+    void testValidateIsAdult() {
         UserRegistrationDTO provided = new UserRegistrationDTO();
         LocalDate birthDate = thresholdBirthDate;
         provided.birthDate = Date.from(birthDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -37,7 +37,7 @@ class UserRegistrationAdultValidationTest {
     }
 
     @Test
-    void validateIsNotAdult() {
+    void testValidateIsNotAdult() {
         UserRegistrationDTO provided = new UserRegistrationDTO();
         LocalDate birthDate = thresholdBirthDate.plusDays(1);
         provided.birthDate = Date.from(birthDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -46,7 +46,7 @@ class UserRegistrationAdultValidationTest {
     }
 
     @Test
-    void validateKoNoBirthDate() {
+    void testValidateKoNoBirthDate() {
         UserRegistrationDTO provided = new UserRegistrationDTO();
 
         // TODO: regler ca
@@ -54,7 +54,7 @@ class UserRegistrationAdultValidationTest {
     }
 
     @Test
-    void getValidationFailMessage() {
+    void testGetValidationFailMessage() {
         String validationFailMessage = validationClass.getValidationFailMessage();
         assertNotNull(validationFailMessage);
         assertFalse(validationFailMessage.isEmpty());

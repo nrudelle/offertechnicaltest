@@ -39,7 +39,7 @@ class UserRegistrationUsernameUniqueValidationTest {
     }
 
     @Test
-    void validateOkUsernameIsUnique() {
+    void testValidateOkUsernameIsUnique() {
         String userName = "cmorgan";
         UserRegistrationDTO provided = new UserRegistrationDTO();
         provided.userName = userName;
@@ -50,7 +50,7 @@ class UserRegistrationUsernameUniqueValidationTest {
         Mockito.verify(userAccountRepository, Mockito.times(1)).getByUsername(userName);
     }
     @Test
-    void validateOkUsernameIsNotUnique() {
+    void testValidateOkUsernameIsNotUnique() {
         String userName = "ldupond";
         UserRegistrationDTO provided = new UserRegistrationDTO();
         provided.userName = userName;
@@ -63,7 +63,7 @@ class UserRegistrationUsernameUniqueValidationTest {
     }
 
     @Test
-    void getValidationFailMessage() {
+    void testGetValidationFailMessage() {
         String validationFailMessage = validationClass.getValidationFailMessage();
         assertNotNull(validationFailMessage);
         assertFalse(validationFailMessage.isEmpty());

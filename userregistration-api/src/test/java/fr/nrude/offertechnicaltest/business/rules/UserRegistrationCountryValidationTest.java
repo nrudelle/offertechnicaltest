@@ -22,7 +22,7 @@ class UserRegistrationCountryValidationTest {
     }
 
     @Test
-    void validateOk() {
+    void testValidateOk() {
         UserRegistrationDTO provided = new UserRegistrationDTO();
         provided.countryCode = "fr";
 
@@ -30,7 +30,7 @@ class UserRegistrationCountryValidationTest {
     }
 
     @Test
-    void validateKo() {
+    void testValidateKo() {
         UserRegistrationDTO provided = new UserRegistrationDTO();
         provided.countryCode = "en";
 
@@ -38,7 +38,7 @@ class UserRegistrationCountryValidationTest {
     }
 
     @Test
-    void getValidationFailMessage() {
+    void testGetValidationFailMessage() {
         String validationFailMessage = validationClass.getValidationFailMessage();
         assertNotNull(validationFailMessage);
         assertFalse(validationFailMessage.isEmpty());

@@ -45,7 +45,7 @@ class UserAccountServiceImplRegisterUserTest {
     }
 
     @Test
-    void registerUserValidateDtoOk() {
+    void testRegisterUserValidateDtoOk() {
         userRegistrationValidations.add(new UserRegistrationImplTestValidation(true));
         UserRegistrationDTO dto = new UserRegistrationDTO();
 
@@ -55,7 +55,7 @@ class UserAccountServiceImplRegisterUserTest {
     }
 
     @Test
-    void registerUserValidateDtoKo() {
+    void testRegisterUserValidateDtoKo() {
         userRegistrationValidations.add(new UserRegistrationImplTestValidation(true));
         userRegistrationValidations.add(new UserRegistrationImplTestValidation(false));
         UserRegistrationDTO dto = new UserRegistrationDTO();
@@ -66,7 +66,7 @@ class UserAccountServiceImplRegisterUserTest {
     }
 
     @Test
-    void registerUserSaveToRepo() throws BusinessValidationException {
+    void testRegisterUserSaveToRepo() throws BusinessValidationException {
         UserRegistrationDTO dto = new UserRegistrationDTO();
 
         userAccountService.registerUser(dto);

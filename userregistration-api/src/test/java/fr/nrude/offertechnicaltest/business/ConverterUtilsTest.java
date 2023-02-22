@@ -16,7 +16,7 @@ class ConverterUtilsTest {
     private static final Date DEFAULT_DATE = new Date();
 
     @Test
-    void convertUserRegistrationDTOtoUserAccountEntity() {
+    void testConvertUserRegistrationDTOtoUserAccountEntity() {
         UserRegistrationDTO provided = getDefaultUserRegistrationDTO();
         UserAccount expected = getDefaultUserAccountEntity();
 
@@ -26,7 +26,7 @@ class ConverterUtilsTest {
     }
 
     @Test
-    void convertUserAccountEntitytoUserDetailsDTO() {
+    void testConvertUserAccountEntitytoUserDetailsDTO() {
         UserAccount provided = getDefaultUserAccountEntity();
         UserDetailsDTO expected = getDefaultUserDetailsDTO();
 
