@@ -63,6 +63,24 @@ class UserRegistrationUsernameUniqueValidationTest {
     }
 
     @Test
+    void testValidateKoNoUserName() {
+        UserRegistrationDTO provided = new UserRegistrationDTO();
+        provided.userName = null;
+
+        assertThrows(NullPointerException.class, () ->{
+            validationClass.validate(provided);
+        });
+    }
+    @Test
+    void testValidateKoPassedNull() {
+        UserRegistrationDTO provided = null;
+
+        assertThrows(NullPointerException.class, () ->{
+            validationClass.validate(provided);
+        });
+    }
+
+    @Test
     void testGetValidationFailMessage() {
         String validationFailMessage = validationClass.getValidationFailMessage();
         assertNotNull(validationFailMessage);

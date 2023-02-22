@@ -26,8 +26,10 @@ public class ControllerConverterUtilsImpl implements ControllerConverterUtils {
     private UserRegistrationDTO doConvertToRegistrationDTO(UserRegistrationRequestDTO request) {
         UserRegistrationDTO dto = new UserRegistrationDTO();
         dto.userName = request.userName;
-        LocalDate birthDate = LocalDate.parse(request.birthDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        dto.birthDate = Date.from(birthDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        if(request.birthDate != null) {
+            LocalDate birthDate = LocalDate.parse(request.birthDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            dto.birthDate = Date.from(birthDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        }
         dto.countryCode = request.countryCode;
         dto.gender = request.gender;
         dto.phoneNumber = request.phoneNumber;

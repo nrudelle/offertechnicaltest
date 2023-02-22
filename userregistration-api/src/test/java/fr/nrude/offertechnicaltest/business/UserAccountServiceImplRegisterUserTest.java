@@ -60,7 +60,14 @@ class UserAccountServiceImplRegisterUserTest {
     }
 
     @Test
-    void testRegisterUserValidateDtoKo() {
+    void testRegisterUserValidateDtoKoPassedNull() {
+        assertThrows(NullPointerException.class, () -> {
+            userAccountService.registerUser(null);
+        });
+    }
+
+    @Test
+    void testRegisterUserValidateDtoValidationFailure() {
         userRegistrationValidations.add(new UserRegistrationImplTestValidation(true));
         userRegistrationValidations.add(new UserRegistrationImplTestValidation(false));
         UserRegistrationDTO dto = new UserRegistrationDTO();

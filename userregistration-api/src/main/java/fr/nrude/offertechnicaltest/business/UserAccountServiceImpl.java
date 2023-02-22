@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -28,6 +29,8 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public UserDetailsDTO registerUser(UserRegistrationDTO dto) throws ValidationBusinessException {
+        Objects.requireNonNull(dto, "input user registration dto is null");
+
         validateUserRegistration(dto);
 
         UserAccount entity = converter.convertToEntity(dto);

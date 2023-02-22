@@ -4,6 +4,7 @@ import fr.nrude.offertechnicaltest.business.dto.UserRegistrationDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Component
@@ -16,6 +17,9 @@ public class UserRegistrationCountryValidation implements UserRegistrationValida
 
     @Override
     public boolean validate(UserRegistrationDTO userRegistrationDTO) {
+        Objects.requireNonNull(userRegistrationDTO);
+        Objects.requireNonNull(userRegistrationDTO.countryCode);
+
         return allowedCountries.contains(userRegistrationDTO.countryCode);
     }
 

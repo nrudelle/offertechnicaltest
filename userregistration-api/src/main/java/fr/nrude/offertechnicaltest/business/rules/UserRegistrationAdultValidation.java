@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Objects;
 
 @Component
 public class UserRegistrationAdultValidation implements UserRegistrationValidation{
@@ -15,6 +16,9 @@ public class UserRegistrationAdultValidation implements UserRegistrationValidati
 
     @Override
     public boolean validate(UserRegistrationDTO userRegistrationDTO) {
+        Objects.requireNonNull(userRegistrationDTO);
+        Objects.requireNonNull(userRegistrationDTO.birthDate);
+
         int actualAge = getActualAge(userRegistrationDTO.birthDate);
         return actualAge >= MINIMUM_AGE_ADULT;
     }

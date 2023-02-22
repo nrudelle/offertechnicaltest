@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Date;
 
 @Component
 public class BusinessConverterUtilsImpl implements BusinessConverterUtils {
@@ -33,10 +34,13 @@ public class BusinessConverterUtilsImpl implements BusinessConverterUtils {
         dto.id = entity.getId();
         dto.userName = entity.getUserName();
 
-        LocalDate birthLocalDate = LocalDate.ofInstant(entity.getBirthDate().toInstant(), ZoneId.systemDefault());
-        dto.birthDate = String.format("%2s-%2s-%s",
-                birthLocalDate.getDayOfMonth(), birthLocalDate.getMonthValue(), birthLocalDate.getYear())
-                .replace(' ', '0');;
+        Date birthDate = entity.getBirthDate();
+        if(birthDate != null) {
+            LocalDate birthLocalDate = LocalDate.ofInstant(birthDate.toInstant(), ZoneId.systemDefault());
+            dto.birthDate = String.format("%2s-%2s-%s",
+                            birthLocalDate.getDayOfMonth(), birthLocalDate.getMonthValue(), birthLocalDate.getYear())
+                    .replace(' ', '0');
+        }
         dto.countryCode =  entity.getCountryCode();
         dto.gender = entity.getGender();
         dto.phoneNumber = entity.getPhoneNumber();

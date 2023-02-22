@@ -49,8 +49,17 @@ class UserRegistrationAdultValidationTest {
     void testValidateKoNoBirthDate() {
         UserRegistrationDTO provided = new UserRegistrationDTO();
 
-        // TODO: regler ca
-        // assertFalse(validationClass.validate(provided));
+        assertThrows(NullPointerException.class, () ->{
+            validationClass.validate(provided);
+        });
+    }
+    @Test
+    void testValidateKoPassedNull() {
+        UserRegistrationDTO provided = null;
+
+        assertThrows(NullPointerException.class, () ->{
+            validationClass.validate(provided);
+        });
     }
 
     @Test
