@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Date;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = UsersSpringBootApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = UserRegistrationSpringBootApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
 class UserAccountGetUserDetailsIntegrationTest {
@@ -56,6 +56,15 @@ class UserAccountGetUserDetailsIntegrationTest {
                 .andExpect(jsonPath("$.result.phoneNumber", Matchers.is(testUser.getPhoneNumber())))
                 .andExpect(jsonPath("$.result.gender", Matchers.is(testUser.getGender())));
     }
+    private UserAccount getTestUser() {
+        UserAccount testUser = new UserAccount();
+        testUser.setUserName("ldupond");
+        testUser.setBirthDate(DEFAULT_DATE);
+        testUser.setCountryCode("fr");
+        testUser.setPhoneNumber("0698286200");
+        testUser.setGender("M");
+        return testUser;
+    }
 
     @Test
     void testGetUserDetailsUserNotFound() throws Exception {
@@ -69,13 +78,5 @@ class UserAccountGetUserDetailsIntegrationTest {
                 .andExpect(jsonPath("$.errors", Matchers.not(Matchers.emptyOrNullString())));
     }
 
-    private UserAccount getTestUser() {
-        UserAccount testUser = new UserAccount();
-        testUser.setUserName("ldupond");
-        testUser.setBirthDate(DEFAULT_DATE);
-        testUser.setCountryCode("fr");
-        testUser.setPhoneNumber("0698286200");
-        testUser.setGender("M");
-        return testUser;
-    }
+
 }

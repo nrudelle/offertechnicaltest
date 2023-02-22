@@ -1,7 +1,7 @@
-package fr.nrude.offertechnicaltest.controller;
+package fr.nrude.offertechnicaltest.controller.converter;
 
 import fr.nrude.offertechnicaltest.business.dto.UserRegistrationDTO;
-import fr.nrude.offertechnicaltest.controller.dto.UserRegistrationRequest;
+import fr.nrude.offertechnicaltest.controller.dto.UserRegistrationRequestDTO;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -21,7 +21,7 @@ class ControllerConverterUtilsImplTest {
 
     @Test
     void testConvertUserRegistrationRequestToUserRegistrationDTO() {
-        UserRegistrationRequest provided = getDefaultUserRegistrationRequest();
+        UserRegistrationRequestDTO provided = getDefaultUserRegistrationRequest();
         UserRegistrationDTO expected = getDefaultUserRegistrationDTO();
 
         UserRegistrationDTO actual = CONVERTER.convertToRegistrationDTO(provided);
@@ -29,8 +29,8 @@ class ControllerConverterUtilsImplTest {
         assertEquals(expected, actual);
     }
 
-    private UserRegistrationRequest getDefaultUserRegistrationRequest() {
-        UserRegistrationRequest request = new UserRegistrationRequest();
+    private UserRegistrationRequestDTO getDefaultUserRegistrationRequest() {
+        UserRegistrationRequestDTO request = new UserRegistrationRequestDTO();
         request.userName = "ldupond";
         LocalDate localDefaultDate = DEFAULT_DATE.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         request.birthDate = String.format("%2s-%2s-%s",

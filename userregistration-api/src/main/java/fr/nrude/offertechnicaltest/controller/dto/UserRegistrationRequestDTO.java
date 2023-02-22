@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public class UserRegistrationRequest {
+public class UserRegistrationRequestDTO {
 
     @NotEmpty(message = "Username cannot be empty")
     @Size(max = 50, message = "Username must have a maximum length of 50 characters")

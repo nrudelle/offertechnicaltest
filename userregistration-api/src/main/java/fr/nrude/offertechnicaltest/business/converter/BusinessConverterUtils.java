@@ -1,4 +1,4 @@
-package fr.nrude.offertechnicaltest.business;
+package fr.nrude.offertechnicaltest.business.converter;
 
 import fr.nrude.offertechnicaltest.business.dto.UserDetailsDTO;
 import fr.nrude.offertechnicaltest.business.dto.UserRegistrationDTO;

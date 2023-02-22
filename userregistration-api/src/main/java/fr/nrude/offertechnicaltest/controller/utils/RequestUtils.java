@@ -1,4 +1,4 @@
-package fr.nrude.offertechnicaltest.controller;
+package fr.nrude.offertechnicaltest.controller.utils;
 
 import org.springframework.validation.BindingResult;
 

@@ -1,5 +1,7 @@
-package fr.nrude.offertechnicaltest.controller;
+package fr.nrude.offertechnicaltest.controller.utils;
 
+import fr.nrude.offertechnicaltest.controller.utils.RequestUtils;
+import fr.nrude.offertechnicaltest.controller.utils.RequestUtilsImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

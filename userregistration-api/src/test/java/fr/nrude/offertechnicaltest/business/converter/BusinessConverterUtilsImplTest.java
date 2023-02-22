@@ -1,5 +1,7 @@
-package fr.nrude.offertechnicaltest.business;
+package fr.nrude.offertechnicaltest.business.converter;
 
+import fr.nrude.offertechnicaltest.business.converter.BusinessConverterUtils;
+import fr.nrude.offertechnicaltest.business.converter.BusinessConverterUtilsImpl;
 import fr.nrude.offertechnicaltest.business.dto.UserDetailsDTO;
 import fr.nrude.offertechnicaltest.business.dto.UserRegistrationDTO;
 import fr.nrude.offertechnicaltest.dao.entities.UserAccount;

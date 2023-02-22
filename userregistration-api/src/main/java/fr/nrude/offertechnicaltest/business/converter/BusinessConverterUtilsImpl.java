@@ -1,4 +1,4 @@
-package fr.nrude.offertechnicaltest.business;
+package fr.nrude.offertechnicaltest.business.converter;
 
 import fr.nrude.offertechnicaltest.business.dto.UserDetailsDTO;
 import fr.nrude.offertechnicaltest.business.dto.UserRegistrationDTO;
@@ -11,14 +11,16 @@ import java.time.ZoneId;
 @Component
 public class BusinessConverterUtilsImpl implements BusinessConverterUtils {
     public UserAccount convertToEntity(UserRegistrationDTO dto) {
-        UserAccount entity = new UserAccount();
+        if(dto == null) {
+            return null;
+        }
 
+        UserAccount entity = new UserAccount();
         entity.setUserName(dto.userName);
         entity.setBirthDate(dto.birthDate);
         entity.setCountryCode(dto.countryCode);
         entity.setGender(dto.gender);
         entity.setPhoneNumber(dto.phoneNumber);
-
         return entity;
     }
 
@@ -28,7 +30,6 @@ public class BusinessConverterUtilsImpl implements BusinessConverterUtils {
         }
 
         UserDetailsDTO dto = new UserDetailsDTO();
-
         dto.id = entity.getId();
         dto.userName = entity.getUserName();
 
@@ -39,7 +40,6 @@ public class BusinessConverterUtilsImpl implements BusinessConverterUtils {
         dto.countryCode =  entity.getCountryCode();
         dto.gender = entity.getGender();
         dto.phoneNumber = entity.getPhoneNumber();
-
         return dto;
     }
 }

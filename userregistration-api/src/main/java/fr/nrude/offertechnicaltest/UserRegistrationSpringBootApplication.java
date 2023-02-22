@@ -10,11 +10,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @SpringBootApplication(scanBasePackages = {"fr.nrude.offertechnicaltest"})
 @EnableJpaRepositories(basePackages = "fr.nrude.offertechnicaltest.dao")
-public class UsersSpringBootApplication
+public class UserRegistrationSpringBootApplication
 {
     public static void main( String[] args )
     {
-        final SpringApplication mainApplication = new SpringApplication(UsersSpringBootApplication.class);
+        final SpringApplication mainApplication = new SpringApplication(UserRegistrationSpringBootApplication.class);
         mainApplication.run();
     }
 }

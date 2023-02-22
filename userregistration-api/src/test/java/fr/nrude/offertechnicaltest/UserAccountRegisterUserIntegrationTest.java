@@ -1,7 +1,7 @@
 package fr.nrude.offertechnicaltest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.nrude.offertechnicaltest.controller.dto.UserRegistrationRequest;
+import fr.nrude.offertechnicaltest.controller.dto.UserRegistrationRequestDTO;
 import fr.nrude.offertechnicaltest.dao.entities.UserAccount;
 import fr.nrude.offertechnicaltest.dao.repository.UserAccountRepository;
 import org.hamcrest.Matchers;
@@ -25,7 +25,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = UsersSpringBootApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = UserRegistrationSpringBootApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
 class UserAccountRegisterUserIntegrationTest {
@@ -49,7 +49,7 @@ class UserAccountRegisterUserIntegrationTest {
 
     @Test
     void testRegisterUserOkUserCreation() throws Exception {
-        UserRegistrationRequest requestProvided = createUserRegistrationRequest("ldupond", "15-03-1988", "fr", "M", "0255668899");
+        UserRegistrationRequestDTO requestProvided = createUserRegistrationRequest("ldupond", "15-03-1988", "fr", "M", "0255668899");
 
         mvc.perform(MockMvcRequestBuilders.post("/users/register")
                         .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(requestProvided)))
@@ -73,7 +73,7 @@ class UserAccountRegisterUserIntegrationTest {
 
     @Test
     void testRegisterUserKoRequestValidationFailMissingMandatoryFields() throws Exception {
-        UserRegistrationRequest requestProvided = createUserRegistrationRequest(null,
+        UserRegistrationRequestDTO requestProvided = createUserRegistrationRequest(null,
                 null, null, "M", "0255668899");
 
         mvc.perform(MockMvcRequestBuilders.post("/users/register")
@@ -87,7 +87,7 @@ class UserAccountRegisterUserIntegrationTest {
 
     @Test
     void testRegisterUserOkRequestValidationFailMissingOptionalFields() throws Exception {
-        UserRegistrationRequest requestProvided = createUserRegistrationRequest("ldupond",
+        UserRegistrationRequestDTO requestProvided = createUserRegistrationRequest("ldupond",
                 "15-03-1988", "fr", null, null);
 
         mvc.perform(MockMvcRequestBuilders.post("/users/register")
@@ -97,7 +97,7 @@ class UserAccountRegisterUserIntegrationTest {
 
     @Test
     void testRegisterUserKoRequestValidationFailUsernameTooLong() throws Exception {
-        UserRegistrationRequest requestProvided = createUserRegistrationRequest(
+        UserRegistrationRequestDTO requestProvided = createUserRegistrationRequest(
                 "unNomTresTresTresTresTresTresTresTresTresTresTresTresLong",
                 "15-03-1988", "fr", "M", "0255668899");
 
@@ -112,7 +112,7 @@ class UserAccountRegisterUserIntegrationTest {
 
     @Test
     void testRegisterUserKoRequestValidationFailBirthDateInvalidPattern() throws Exception {
-        UserRegistrationRequest requestProvided = createUserRegistrationRequest("ldupond",
+        UserRegistrationRequestDTO requestProvided = createUserRegistrationRequest("ldupond",
                 "15/03/1988", "fr", "M", "0255668899");
 
         mvc.perform(MockMvcRequestBuilders.post("/users/register")
@@ -126,7 +126,7 @@ class UserAccountRegisterUserIntegrationTest {
 
     @Test
     void testRegisterUserKoRequestValidationFailCountryCodeInvalidPattern() throws Exception {
-        UserRegistrationRequest requestProvided = createUserRegistrationRequest("ldupond",
+        UserRegistrationRequestDTO requestProvided = createUserRegistrationRequest("ldupond",
                 "15-03-1988", "france", "M", "0255668899");
 
         mvc.perform(MockMvcRequestBuilders.post("/users/register")
@@ -140,7 +140,7 @@ class UserAccountRegisterUserIntegrationTest {
 
     @Test
     void testRegisterUserKoRequestValidationFailPhoneNumberInvalidPattern() throws Exception {
-        UserRegistrationRequest requestProvided = createUserRegistrationRequest("ldupond",
+        UserRegistrationRequestDTO requestProvided = createUserRegistrationRequest("ldupond",
                 "15-03-1988", "fr", "M", "02 55 66 88 99");
 
         mvc.perform(MockMvcRequestBuilders.post("/users/register")
@@ -154,7 +154,7 @@ class UserAccountRegisterUserIntegrationTest {
 
     @Test
     void testRegisterUserKoRequestValidationFailGenderInvalidPattern() throws Exception {
-        UserRegistrationRequest requestProvided = createUserRegistrationRequest("ldupond",
+        UserRegistrationRequestDTO requestProvided = createUserRegistrationRequest("ldupond",
                 "15-03-1988", "fr", "Masculin", "0255668899");
 
         mvc.perform(MockMvcRequestBuilders.post("/users/register")
@@ -171,7 +171,7 @@ class UserAccountRegisterUserIntegrationTest {
         UserAccount testUser = createUserAccountEntity(1L,"ldupond", "15-03-1988", "fr", "M", "0255668899");;
         userAccountRepository.save(testUser);
 
-        UserRegistrationRequest requestProvided = createUserRegistrationRequest("ldupond",
+        UserRegistrationRequestDTO requestProvided = createUserRegistrationRequest("ldupond",
                 "15-03-1987", "fr", "M", "0623568899");
 
         mvc.perform(MockMvcRequestBuilders.post("/users/register")
@@ -185,7 +185,7 @@ class UserAccountRegisterUserIntegrationTest {
 
     @Test
     void testRegisterUserKoBusinessValidationFailNotAdult() throws Exception {
-        UserRegistrationRequest requestProvided = createUserRegistrationRequest("ldupond",
+        UserRegistrationRequestDTO requestProvided = createUserRegistrationRequest("ldupond",
                 "15-03-2010", "fr", "M", "0623568899");
 
         mvc.perform(MockMvcRequestBuilders.post("/users/register")
@@ -199,7 +199,7 @@ class UserAccountRegisterUserIntegrationTest {
 
     @Test
     void testRegisterUserKoBusinessValidationFailUnauthorizedCountry() throws Exception {
-        UserRegistrationRequest requestProvided = createUserRegistrationRequest("ldupond",
+        UserRegistrationRequestDTO requestProvided = createUserRegistrationRequest("ldupond",
                 "15-03-1987", "en", "M", "0623568899");
 
         mvc.perform(MockMvcRequestBuilders.post("/users/register")
@@ -226,9 +226,9 @@ class UserAccountRegisterUserIntegrationTest {
         return userAccount;
     }
 
-    private UserRegistrationRequest createUserRegistrationRequest(String userName, String birthDate, String countryCode,
-                                                              String gender, String phoneNumber) {
-        UserRegistrationRequest request = new UserRegistrationRequest();
+    private UserRegistrationRequestDTO createUserRegistrationRequest(String userName, String birthDate, String countryCode,
+                                                                     String gender, String phoneNumber) {
+        UserRegistrationRequestDTO request = new UserRegistrationRequestDTO();
         request.userName = userName;
         request.birthDate = birthDate;
         request.countryCode = countryCode;

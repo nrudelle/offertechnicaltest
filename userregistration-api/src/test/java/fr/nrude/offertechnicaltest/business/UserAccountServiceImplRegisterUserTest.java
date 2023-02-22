@@ -1,5 +1,6 @@
 package fr.nrude.offertechnicaltest.business;
 
+import fr.nrude.offertechnicaltest.business.converter.BusinessConverterUtils;
 import fr.nrude.offertechnicaltest.business.dto.UserRegistrationDTO;
 import fr.nrude.offertechnicaltest.business.exceptions.ValidationBusinessException;
 import fr.nrude.offertechnicaltest.business.rules.UserRegistrationImplTestValidation;
